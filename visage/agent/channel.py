@@ -92,11 +92,22 @@ class ChannelAgent(object):
     def enter_main_loop(self):
         """
         run forever to handle the request
+        request:
+        {
+            "backend": "module_name"
+            "execute": "method_name"
+            "arguments": {
+                "path": "XXXX"
+                ...
+            }
+        }
+        
         :return: response object
         """
 
         while True:
-            pass
+            request = self.get_request()
+
 
 
 
