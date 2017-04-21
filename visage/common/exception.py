@@ -2,7 +2,6 @@
 visage exception module
 """
 
-import json
 
 class VisageException(Exception):
     """
