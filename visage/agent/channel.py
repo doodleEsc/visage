@@ -10,8 +10,8 @@ It runs in KVM or QEMU guests
 
 import json
 
+from visage.common import exception
 from visage.utils import log
-from visage import exception
 
 LOG = log.Log()
 
@@ -61,7 +61,7 @@ class ChannelAgent(object):
     def get_request(self):
         """
         read from host and handle it
-        :return: json object
+        :return: dict object
         """
         data = self._readline()
         try:
@@ -76,14 +76,12 @@ class ChannelAgent(object):
         :param data: string or dict 
         :return: None
         """
-
         if isinstance(data, dict):
             data = json.dumps(data)
         elif isinstance(data, str):
             pass
         else:
             raise exception.ResponseValueError
-
         try:
             self._write(data)
         except IOError:
@@ -101,12 +99,28 @@ class ChannelAgent(object):
                 ...
             }
         }
-        
         :return: response object
         """
-
         while True:
-            request = self.get_request()
+            try:
+                request = self.get_request()
+                # make sure that no matter what happend, for example, exception
+                # it should return a response too
+                resp = self._dispatcher(request)
+
+                # write back to host
+                self.write(resp)
+            except exception.JsonDecodeError:
+                # ocurred when decode json string
+                pass
+            except exception.ResponseValueError:
+                # ocurred when encode dict object
+                pass
+            except exception.ResponseError:
+                # occured when IOError
+                pass
+
+
 
 
 
