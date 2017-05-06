@@ -1,24 +1,25 @@
 """
 this module dispatch the request to backend
 """
-
+import json
 from visage.utils.importutils import import_object
+
 
 class Dispatcher(object):
 
-    def __init__(self, *args):
+    def __init__(self, **kwargs):
         """
         :param args: 
         """
         backends = {}
 
-        for item in args:
-            print item
-            backends[item] = import_object(item)
-
+        for key, value in kwargs.items():
+            print key
+            backends[key] = import_object(value)
         self.backends = backends
 
-    def __call__(self, request):
+    def __call__(self, msg):
+        request = json.loads(msg)
         backend_name = request.get('backend')
         method_name = request.get('execute')
         arguments = request.get('arguments')
@@ -39,7 +40,13 @@ if __name__ == '__main__':
     request = {
         'backend': 'visage.backend.test.Test',
         'execute': 'test',
-        'arguments': {}
+        'arguments': {
+            'args': [],
+            'kwargs': {
+                'name': 'xxx',
+                'id': '123'
+            }
+        }
     }
 
     d = Dispatcher(*backends)
