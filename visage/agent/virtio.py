@@ -45,15 +45,37 @@ class ChannelAgent(object):
 
     def handle_host_msg(self, flag):
         if flag & select.POLLIN:
-            data = self.conn_handler.readline().strip()
+            data = self.get_request_data()
+
+            # TODO handle IOError data
+            # for example, 
             if not data:
                 LOG.info("Connection closed")
                 self.handle_host_conn_shutdown()
                 return
             resp = self.dispatcher(data)
-            print resp
-            self.conn_handler.write(resp+"\n")
-            self.conn_handler.flush()
+            self.write_back_to_host(resp)
+
+    def get_request_data(self):
+        try:
+            request_data = self.conn_handler.readline()
+            return request_data.strip()
+        except IOError as error:
+            print error
+            pass
+
+    def write_back_to_host(self, resp):
+        try:
+            if not resp.endswith('\n'):
+                self.conn_handler.write(resp)
+                self.conn_handler.write('\n')
+                self.conn_handler.flush()
+            else:
+                self.conn_handler.write(resp)
+                self.conn_handler.flush()
+        except IOError as error:
+            print error
+            # TODO handle IOError
 
     def handle_host_conn_shutdown(self):
         self.unmask_sigio()
@@ -63,7 +85,8 @@ class ChannelAgent(object):
         signal.signal(signal.SIGIO, self.sigio_handler)
 
         while True:
-            nfds = 0;
+
+            nfds = 0
             if self.check_host_connection:
                 self.poller.register(self.conn_handler, select.POLLIN)
                 nfds = nfds + 1
