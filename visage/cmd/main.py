@@ -14,7 +14,7 @@ def main():
     }
 
     dispatcher = Dispatcher(**backends)
-    ga = ChannelAgent(handler, chardev, dispatcher)
+    ga = ChannelAgent(handler, chardev, dispatcher, non_blocking=True)
     ga.run()
 
 if __name__ == '__main__':
