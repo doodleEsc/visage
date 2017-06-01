@@ -14,7 +14,6 @@ class Dispatcher(object):
         backends = {}
 
         for key, value in kwargs.items():
-            print key
             backends[key] = import_object(value)
         self.backends = backends
 
