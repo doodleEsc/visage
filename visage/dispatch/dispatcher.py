@@ -44,6 +44,7 @@ class Dispatcher(object):
             method_name = self.get_method(request)
             args = self.get_args(request)
             kwargs = self.get_kwargs(request)
+            print kwargs
 
             backend = self.backends[backend_name]
             method = getattr(backend, method_name)
