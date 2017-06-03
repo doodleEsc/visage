@@ -86,14 +86,13 @@ class ChannelAgent(object):
         except TimeoutError:
             return None
 
-
     def write_back_to_host(self, resp):
         try:
             self._do_write_back(resp)
         except (IOError, TimeoutError):
             return
 
-    @timeout(2)
+    @timeout(5)
     def _do_read(self):
         while True:
             try:
@@ -106,7 +105,7 @@ class ChannelAgent(object):
                 else:
                     return None
 
-    @timeout(2)
+    @timeout(5)
     def _do_write_back(self, resp):
         while True:
             try:
