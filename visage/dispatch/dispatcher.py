@@ -18,21 +18,21 @@ class Dispatcher(object):
         self.backends = backends
 
     def get_backend(self, req):
-        return request.get('backend')
+        return req.get('backend')
 
     def get_method(self, req):
-        return request.get('execute')
+        return req.get('execute')
 
     def get_args(self, req):
         try:
-            return request.get('args')
+            return req.get('args')
         except KeyError:
             empty = ()
             return empty
 
     def get_kwargs(self, req):
         try:
-            return request.get('kwargs')
+            return req.get('kwargs')
         except KeyError:
             empty = {}
             return empty
