@@ -27,14 +27,14 @@ class Dispatcher(object):
         try:
             return req.get('args')
         except KeyError:
-            empty = ()
+            empty = tuple()
             return empty
 
     def get_kwargs(self, req):
         try:
             return req.get('kwargs')
         except KeyError:
-            empty = {}
+            empty = dict()
             return empty
 
     def __call__(self, msg):

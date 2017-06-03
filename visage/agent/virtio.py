@@ -35,9 +35,9 @@ class ChannelAgent(object):
         fcntl.fcntl(fd, fcntl.F_SETOWN, os.getpid())
 
     def sigio_handler(self, signal_number, frame):
-        print "get into sigio_handler"
+        #print "get into sigio_handler"
         if not self.check_host_connection:
-            print "set mask sigio"
+            #print "set mask sigio"
             self.mask_sigio()
             self.check_host_connection = True
 
@@ -58,11 +58,11 @@ class ChannelAgent(object):
     def handle_host_msg(self, flag):
         if flag & select.POLLIN:
             message = self.get_request_data()
-            print message
+            #print message
             # TODO handle IOError data
             # for example, 
             if not message:
-                print "no data recived"
+                #print "no data recived"
                 LOG.info("Connection closed")
                 self.handle_host_conn_shutdown()
                 return
