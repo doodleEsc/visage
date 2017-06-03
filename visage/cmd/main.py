@@ -7,7 +7,6 @@ from visage.dispatch.dispatcher import Dispatcher
 def main():
     chardev = "/dev/virtio-ports/org.qemu.guest_agent.1"
     handler = open(chardev, "r+")
-    #backends = ['visage.backend.test.Test']
 
     backends = {
         "Test": "visage.backend.test.Test"
