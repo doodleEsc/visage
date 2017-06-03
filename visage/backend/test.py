@@ -1,4 +1,4 @@
 class Test(object):
 
-    def test(self):
-        return "it works fine"
+    def test(self, name, id):
+        return "name: %s, id: %s" % (name, id)

@@ -81,7 +81,11 @@ class ChannelAgent(object):
             sys.exit(-1)
 
     def get_request_data(self):
-        return self._do_read()
+        try:
+            return self._do_read()
+        except TimeoutError:
+            return None
+
 
     def write_back_to_host(self, resp):
         try:
