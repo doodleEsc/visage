@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+
 import fcntl, signal, os, time, select, errno, sys
 from pysigset import SIGSET, sigemptyset, sigaddset,\
     sigprocmask, SIG_BLOCK, SIG_UNBLOCK
@@ -60,7 +61,7 @@ class ChannelAgent(object):
             message = self.get_request_data()
             #print message
             # TODO handle IOError data
-            # for example, 
+            # for example,
             if not message:
                 #print "no data recived"
                 LOG.info("Connection closed")
